@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.7.1.js"
+	integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+	crossorigin="anonymous"></script>
+</head>
+<body class="bg-light">
+	<div th:replace="~{views/common/navbar :: navbar}"></div>
+	<div class="container">
+		<main>
+			<div class="py-5 text-center">
+				<a href="/home"><img class="d-block mx-auto mb-4" src="/image/springboot.png" width="130"></a>
+				<h2>Edit</h2>
+			</div>
+
+			<div style="margin-left: 350px; margin-right: 350px;">
+				<form class="needs-validation" method="POST" action="/attm/update" enctype="multipart/form-data" id="attmForm">
+					<input type="hidden" name="boardId" th:value="${b.boardId}">
+					<input type="hidden" name="page" th:value="${page}">
+					<div class="row g-3">
+						<div class="col-12">
+							<label for="boardTitle" class="form-label">TITLE</label>
+							<input type="text" class="form-control" id="boardTitle" name="boardTitle" th:value="${b.boardTitle}">
+						</div>
+
+						<div class="col-12">
+							<div class="input-group">
+					          <span class="input-group-text">CONTENT</span>
+					          <textarea class="form-control" rows="10" name="boardContent" style="resize: none;" th:text="${b.boardContent}"></textarea>
+					        </div>
+						</div>
+						
+						<br><br><br>
+						<div>
+							<th:block th:each="a:${list}">
+								<h5>
+									<a th:href="@{/}+${a.renameName}" th:download="${a.originalName}">
+									[[${a.originalName}]]</a>
+									<button type="button" class="btn btn-outline-dark btn-sm deleteAttm" th:id="|delete-${a.renameName}/${a.attmLevel}|">삭제off</button>
+									<input type="hidden" name="deleteAttm" value="">
+								</h5>
+							</th:block>
+						</div>
+
+						<button type="button" class="w-25 btn btn-outline-success" id="addFile">+ 파일추가</button>
+						<div id="fileArea">
+							<div class="mb-3">
+								<input type="file" class="form-control form-control-lg" name="file">
+							</div>
+						</div>
+
+						<br><br><br><br><br>
+						
+						
+						<button class="w-100 btn btn-success btn-lg" id="submitAttm">UPDATE</button>
+						<button type="button" th:onclick="|location.href='/attm/list?page=${page}'|">TO LIST</button>
+						<button class="w-100 btn btn-dark btn-lg" type="button" onclick="javascript:history.back();">BACK</button>
+					</div>
+				</form>
+			</div>
+		</main>
+
+		<div class="modal fade" tabindex="-1" role="dialog" id="modalChoice">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content rounded-3 shadow">
+					<div class="modal-body p-4 text-center">
+						<h3 class="mb-0">첨부파일이 삽입되지 않았습니다.</h3>
+						<p class="mb-0">작성된 글은 일반 게시판으로 옮겨집니다.</p>
+					</div>
+					<div class="modal-footer flex-nowrap p-0">
+						<button type="button"
+							class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-end"
+							id="moveBoard">
+							<strong>네</strong>
+						</button>
+						<button type="button"
+							class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0"
+							data-bs-dismiss="modal">아니오</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<footer class="my-5 pt-5 text-muted text-center text-small"></footer>
+	</div>
+	<script type="text/javascript">
+		window.onload=()=>{
+			const fileArea = document.querySelector("#fileArea");
+			console.log(fileArea);
+			document.getElementById("addFile").addEventListener("click", ()=>{
+				const newDiv = document.createElement("div");
+				newDiv.classList.add("mb-3");
+				newDiv.innerHTML = "<input type='file' class='form-control form-control-lg' name='file'>";
+				fileArea.append(newDiv);
+			});
+
+			const deleteBtns = document.querySelectorAll(".deleteAttm");
+			console.log(deleteBtns);
+			for(const btn of deleteBtns){
+				btn.addEventListener("click", function(){
+					const nextHidden = this.nextElementSibling;
+
+					if (nextHidden.value == ""){
+						btn.innerText = "삭제on";
+						btn.style.backgroundColor = "black";
+						btn.style.color = "white";
+						nextHidden.value= this.id.split("-")[1];
+					}else{
+						btn.innerText = "삭제off";
+						btn.style.background = "transparent";
+						btn.style.color = "black";
+						nextHidden.removeAttribute("value");
+					}
+				});
+			}
+
+			const form = document.getElementById("attmForm");
+			document.getElementById("submitAttm").addEventListener("click",function(){
+				const files = document.getElementsByName("file");
+				let isEmpty = true;
+				for (const f of files){
+					if(f.value != ""){
+						isEmpty = false;
+					}
+				}
+
+				let isAllRemove = true;
+				for (const btn of deleteBtns){
+					if (btn.innerText == "삭제off"){
+						isAllRemove= false;
+					}
+				}
+
+				if(isEmpty && isAllRemove){
+					$("#modalChoice").modal("show");
+				}
+
+				document.getElementById("moveBoard").addEventListener("click", function(){
+					form.submit();
+				});
+
+			});
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+	<include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+	
+	<root level="INFO">
+		<appender-ref ref="CONSOLE"/>
+	</root>
+	
+	<appender class="ch.qos.logback.core.ConsoleAppender" name="myConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>[%p]"%m"  %F method: %M / %r ms \n</pattern>
+		</layout>
+	</appender>
+	
+	<appender name="myFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>D:/logs/member/login.log</file>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>%d{yy-MM-dd HH:mm:ss} [%p] %c{1}.%M>%L - %m%n</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>D:/logs/member/login.log.%d{yyyyMMdd}</fileNamePattern>
+		</rollingPolicy>
+	</appender>
+	
+	
+	<logger name="kh.springboot.member.controller.MemberController" 
+		level="debug" additivity="false">
+		<appender-ref ref="myConsoleAppender"/>
+	</logger>
+	
+	<logger name="kh.springboot.common.interceptor.LoginInterceptor" 
+		level="debug" additivity="false">
+		<appender-ref ref="myFileAppender"></appender-ref>
+	</logger>
+</configuration>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org..DTD Mapper 3.0//EN"
+	 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kh.springboot.board.model.mapper.BoardMapper">
+	<select id="getListCount" resultType="_int">
+		select count(*)
+		from board
+		where board_status='Y' and board_type=#{i}
+	</select>
+	<select id="selectBoardList" resultMap="boardResultSet">
+		select * 
+		from board
+		join member on (board_writer = id)
+		where board_status='Y' and board_type=#{boardType}
+		order by board_id desc
+	</select>
+	<insert id="insertBoard">
+		<selectKey order="BEFORE" resultType="_int" keyProperty="boardId">
+			select seq_bid.nextval from dual
+		</selectKey>
+		insert into board
+		values (#{boardId}, #{boardTitle}, #{boardWriter},
+			#{boardContent}, #{boardCount}, sysdate, sysdate, default,
+			#{boardType})
+	</insert>
+	<select id="selectBoard" resultMap="boardResultSet">
+		select * 
+		from board
+		join member on (board_writer = id)
+		where board_status='Y' and board_id=#{bId}
+	</select>
+	<update id="addCount">
+		update board
+		set board_count = board_count + 1
+		where board_id=#{bId}
+	</update>
+	<update id="updateBoard">
+		update board
+		set board_title=#{boardTitle}, board_content=#{boardContent}
+			, board_type=#{boardType}
+		where board_id = #{boardId} and board_status='Y'
+	</update>
+	<update id="deleteBoard">
+		update board
+		set board_status='N'
+		where board_id=#{bid}
+	</update>
+	<select id="selectAttmBoardList" resultType="Attachment">
+		select *
+		from attachment
+		where attm_status ='Y' 
+		<if test="bid != null">
+			and ref_board_id=#{bid}
+		</if>
+		<if test="bid == null">
+			and attm_level = 0
+		</if>
+		order by attm_id
+	</select>
+	<insert id="insertAttm">
+		insert all
+		<foreach collection="list" item="a" separator=" ">
+			into attachment
+			values(new_aid, #{a.refBoardId}, #{a.originalName},
+				#{a.renameName}, #{a.attmPath}, #{a.attmLevel}, default)
+		</foreach>
+		select * from dual
+	</insert>
+	<delete id="deleteAttm">
+		delete from attachment
+		where rename_name in
+		<foreach collection="list" item="rename" 
+			open="(" close=")" separator=", ">
+			#{rename}
+		</foreach>
+	</delete>
+	<update id="updateAttmLevel">
+		update attachment
+        set attm_level = 0
+        where attm_id = (select min(attm_id)
+				         from attachment 
+				         where ref_board_id = #{boardId})
+	</update>
+	<!-- <update id="statusNAttm">
+		update attachment
+		set attm_status = 'N'
+		where ref_board_id = #{bid}
+	</update> -->
+	<select id="selectTop" resultMap="boardResultSet">
+	<![CDATA[
+		select *
+		from (select * from board
+			join member on (id=board_writer)
+			where board_status = 'Y' 
+			order by board_count desc)
+		where rownum < 6
+	]]>
+	</select>
+	<select id = "selectReplyList" resultType="Reply">
+		select * from reply
+		join member on (reply_writer = id)
+		where ref_board_id = #{bid}
+			and reply_status = 'Y'
+		order by reply_id desc
+	</select>
+	<insert id="insertReply">
+		insert into reply
+		values(seq_rid.nextval, #{replyContent}, #{refBoardId},
+			 #{replyWriter}, sysdate, sysdate, default)
+	</insert>
+	<update id="deleteReply">
+		update reply
+		set reply_status = 'N'
+		where reply_id = #{replyId}
+	</update>
+	<update id="updateReply">
+		update reply
+		set reply_content = #{replyContent}, reply_modify_date = sysdate
+		where reply_id = #{replyId}
+	</update>
+	<resultMap id="boardResultSet" type="Board">
+		<result column="board_create_date" property="createDate"/>
+		<result column="board_modify_date" property="modifyDate"/>
+		<result column="board_status" property="status"/>		
+	</resultMap>
+</mapper>
