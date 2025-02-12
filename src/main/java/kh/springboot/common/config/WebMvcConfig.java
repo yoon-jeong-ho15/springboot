@@ -16,6 +16,8 @@ public class WebMvcConfig implements WebMvcConfigurer{
 		registry.addResourceHandler("/**") //매핑url 설정 (파일을 가지고 올 때의 경로를 설정)
 			.addResourceLocations("file:///c:/uploadFiles/"
 					, "classpath:/static/"); // 정적 리소스 위치
+		registry.addResourceHandler("/profiles/**")
+			.addResourceLocations("file:///c:/profiles/");
 	}
 	
 	@Override

@@ -62,4 +62,10 @@
 		from member
 		where ${col} = #{value}
 	</select>
+	
+	<update id="updateProfile">
+		update member
+		set profile = #{profile}
+		where id = #{id}
+	</update>
 </mapper>

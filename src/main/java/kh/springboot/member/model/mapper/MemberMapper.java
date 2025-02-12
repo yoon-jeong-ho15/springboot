@@ -24,4 +24,6 @@ public interface MemberMapper {
 
 	int checkValue(HashMap<String, String> map);
 
+	int updateProfile(HashMap<String, String> map);
+
 }
