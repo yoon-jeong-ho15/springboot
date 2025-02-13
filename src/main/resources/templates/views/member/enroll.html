@@ -58,8 +58,17 @@
 									<option>nate.com</option>
 									<option>hanmail.net</option>
 								</select>
+								<button type="button" class="btn btn-outline-success" id="sendEmail">인증번호</button>
 							</div>
 						</div>
+
+						<div class="col-12" style="display:none;">
+							<label class="form-label">EMAIL CONFIRM</label>
+							<div class="input-group">
+							   <input type="text" class="form-control">
+							   <button type="button" class="w-25 btn btn-outline-success" id="verifyBtn">인증번호 확인</button>
+							</div>
+						 </div>   
 						
 						<div class="col-12">
 							<label class="form-label">GENDER</label><br>
@@ -103,9 +112,51 @@
 				checkValue(this);
 			});
 		}
+		
+		let confirmData = '';
+		document.getElementById("sendEmail").addEventListener("click", function(){
+			const emailId = document.querySelector("#emailId").value.trim();
+
+			if(emailId == ""){
+				alert("이메일이 입력되지 않았습니다.");
+				document.querySelector("#emailId").focus();
+			}else{
+				$.ajax({
+					url: '/member/echeck',
+					data : {
+						email :  emailId+'@'+document.querySelector('select[name=emailDomain]').value
+						},
+					success : data=>{
+						alert('성공정으로 메일이 발송되었습니다.');
+						const confirmDiv = $(this).parent().parent().next();
+						$(confirmDiv).slideDown();
+						confirmData = data;
+					},
+					error: data => console.log(data)
+				});
+			}
+		});
+
+		document.getElementById('verifyBtn').addEventListener('click', function(){
+			const verifyNum = this.previousElementSibling;
+			if(verifyNum.value.trim() == ''){
+				alert('인증번호를 입력해주세요.');
+				verifyNum.focus();
+			}else if(confirmData ==''){
+				alert('이메일 인증을 먼저 진행해주세요');
+			}else{
+				if(verifyNum.value.trim() == confirmData){
+					alert('이메일이 확인되었습니다.');
+					verifyNum.disabled = true;
+					this.disabled = true;
+				}else{
+					alert('인증번호가 일치하지 않습니다.');
+				}
+			}
+		});
 
 		const checkValue= (obj) =>{
-			const checkResult = obj.nextElementSibling();
+			const checkResult = obj.nextElementSibling;
 				if(obj.value.trim()==""){
 					checkResult.innerText = "Please check your "+obj.id=="id"? "ID" : "Nick Name";
 					checkResult.style.color = "black";

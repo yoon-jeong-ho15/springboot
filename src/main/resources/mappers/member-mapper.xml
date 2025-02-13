@@ -68,4 +68,16 @@
 		set profile = #{profile}
 		where id = #{id}
 	</update>
+	
+	<select id="findInfo" resultType="Member">
+		select *
+		from member
+		where member_status ='Y'
+		<if test="name != null">
+			and email=#{email} and name=#{name}
+		</if>
+		<if test="name == null">
+			and email=#{email} and id=#{id}
+		</if>
+	</select>
 </mapper>

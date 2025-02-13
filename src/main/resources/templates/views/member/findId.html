@@ -20,32 +20,25 @@
 	<main class="form-signin w-100 m-auto">
 		<form action="/member/signIn" method="post">
 			<a href="/home"><img class="mb-4" src="/image/springboot.png" width="150"></a>
-			<h1 class="h3 mb-3 fw-normal">Please sign in</h1>
-
-			<div class="form-floating">
-				<input type="text" class="form-control" id="floatingInput" name="id" placeholder="input your id">
-				<label for="floatingInput">ID</label>
+			<h3 class="mb-3">아이디 찾기</h3>
+			<h6>고객님의 정보로 가입된 아이디입니다.</h6>
+			
+			<br>
+			
+			<div class="form-floating" style="border: 1px solid lightgray; padding: 20px;">
+				<b style="font-size: 20px;">[[${id}]]</b>
 			</div>
-			<div class="form-floating">
-				<input type="password" class="form-control" id="floatingPassword" name="pwd" placeholder="Password">
-				<label for="floatingPassword">Password</label>
-			</div>
+			
+			<br>
 
-			<button class="w-100 btn btn-lg btn-success" type="submit">Sign in</button><br><br>
 			<div class="mb-3">
+				<a href="/member/signIn"><label>Sign in</label></a>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<a href="/member/enroll"><label>Sign up</label></a>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="/member/findIDPW"><label>Find ID/PWD</label></a>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="/member/findIDPW"><label>Find PW</label></a>
 			</div>
-			<input type="hidden" name="beforeURL">
 		</form>
 	</main>
-	<script>
-		window.onload=()=>{
-			const beforeURL = document.referrer;
-			document.getElementsByName("beforeURL")[0].value = beforeURL;
-			console.log("beforeURL : "+beforeURL);
-		}
-	</script>
 </body>
 </html>

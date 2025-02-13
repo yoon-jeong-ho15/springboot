@@ -26,4 +26,6 @@ public interface MemberMapper {
 
 	int updateProfile(HashMap<String, String> map);
 
+	Member findInfo(Member m);
+
 }

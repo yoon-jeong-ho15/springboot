@@ -46,5 +46,9 @@ public class MemberService {
 	public int updateProfile(HashMap<String, String> map) {
 		return mapper.updateProfile(map);
 	}
+
+	public Member findInfo(Member m) {
+		return mapper.findInfo(m);
+	}
 	
 }
