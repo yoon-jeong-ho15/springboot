@@ -29,6 +29,7 @@ import jakarta.servlet.http.HttpSession;
 import kh.springboot.member.model.exception.MemberException;
 import kh.springboot.member.model.service.MemberService;
 import kh.springboot.member.model.vo.Member;
+import kh.springboot.member.model.vo.TodoList;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -93,6 +94,7 @@ public class MemberController {
 			@RequestParam("beforeURL") String beforeURL) {
 		Member loginUser = mService.login(m);
 		if (loginUser != null && bcrypt.matches(m.getPwd(), loginUser.getPwd())) {
+			System.out.println(loginUser);
 			model.addAttribute("loginUser", loginUser);
 			if(loginUser.getIsAdmin().equals("Y")) {
 				return "redirect:/admin/home";
@@ -150,7 +152,11 @@ public class MemberController {
 			String id = loginUser.getId();
 			ArrayList<HashMap<String, Object>> list = mService.selectMyList(id);
 			mv.addObject("list", list);
+			ArrayList<TodoList> todolist = mService.selectTodoList(id);
+			mv.addObject("todolist", todolist);
+
 			mv.setViewName("/myInfo");
+			
 		}
 		return mv;
 	}
@@ -334,5 +340,11 @@ public class MemberController {
 		}else {
 			throw new MemberException("비밀번호 수정 실패");
 		}
+	}
+	
+	@GetMapping("/linsert")
+	@ResponseBody
+	public int insertTodo(@ModelAttribute TodoList todo) {
+		return mService.insertTodo(todo);
 	}
 }

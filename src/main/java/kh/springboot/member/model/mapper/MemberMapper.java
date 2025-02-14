@@ -6,6 +6,7 @@ import java.util.HashMap;
 import org.apache.ibatis.annotations.Mapper;
 
 import kh.springboot.member.model.vo.Member;
+import kh.springboot.member.model.vo.TodoList;
 
 @Mapper
 public interface MemberMapper {
@@ -27,5 +28,9 @@ public interface MemberMapper {
 	int updateProfile(HashMap<String, String> map);
 
 	Member findInfo(Member m);
+
+	ArrayList<TodoList> selectTodoList(String id);
+
+	int insertTodo(TodoList todo);
 
 }
