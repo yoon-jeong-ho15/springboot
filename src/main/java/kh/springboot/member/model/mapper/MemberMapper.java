@@ -33,4 +33,8 @@ public interface MemberMapper {
 
 	int insertTodo(TodoList todo);
 
+	int updateTodo(TodoList todo);
+
+	int deleteTodo(int todoNum);
+
 }
