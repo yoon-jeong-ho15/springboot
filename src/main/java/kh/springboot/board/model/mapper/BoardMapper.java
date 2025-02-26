@@ -44,6 +44,8 @@ public interface BoardMapper {
 
 	int updateReply(Reply r);
 
+	ArrayList<Board> selectRecentBoards();
+
 //	int statusNAttm(int bid);
 
 }
