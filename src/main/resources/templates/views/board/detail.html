@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<script src="https://code.jquery.com/jquery-3.7.1.js"
-	integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-	crossorigin="anonymous"></script>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<script src="https://code.jquery.com/jquery-3.7.1.js"
+		integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 </head>
+
 <body class="bg-light">
 	<div th:replace="~{views/common/navbar :: navbar}"></div>
 	<div class="container">
@@ -23,31 +24,36 @@
 					<div class="row g-3">
 						<div class="col-12">
 							<label for="boardTitle" class="form-label">TITLE</label>
-							<input type="text" class="form-control" id="boardTitle" name="boardTitle" th:value="${b.boardTitle}">
+							<input type="text" class="form-control" id="boardTitle" name="boardTitle"
+								th:value="${b.boardTitle}">
 						</div>
 
 						<div class="col-12">
 							<div class="input-group">
-					          <span class="input-group-text">CONTENT</span>
-					          <textarea id="test1" class="form-control" rows="10" name="boardContent" style="resize: none;" readonly th:text="${b.boardContent}"></textarea>
-					        </div>
+								<span class="input-group-text">CONTENT</span>
+								<textarea id="test1" class="form-control" rows="10" name="boardContent"
+									style="resize: none;" readonly th:text="${b.boardContent}"></textarea>
+							</div>
 						</div>
-						
+
 						<br><br><br><br><br>
-						
+
 						<th:block th:if="${session.loginUser != null && session.loginUser.id == b.boardWriter}">
 							<button type="button" id="updateForm" class="w-100 btn btn-success btn-lg">UPDATE</button>
-							<button class="w-100 btn btn-secondary btn-lg" type="button" id="deleteModal" >DELETE</button>
+							<button class="w-100 btn btn-secondary btn-lg" type="button"
+								id="deleteModal">DELETE</button>
 						</th:block>
-						<button class="w-100 btn btn-dark btn-lg" type="button" onclick="javascript:history.back();">BACK</button>
+						<button class="w-100 btn btn-dark btn-lg" type="button"
+							onclick="javascript:history.back();">BACK</button>
 
 						<br>
-                  
+
 						<div class="input-group"><!-- 댓글 작성부분 -->
 							<span class="input-group-text">REPLY<br>
-							CONTENT</span>
+								CONTENT</span>
 							<textarea class="form-control" rows="3" id="replyContent" style="resize:none;"></textarea>
-							<button class="btn btn-outline-success btn-lg" id="replySubmit" type="button" th:disabled="${session.loginUser == null}">SUBMIT</button>
+							<button class="btn btn-outline-success btn-lg" id="replySubmit" type="button"
+								th:disabled="${session.loginUser == null}">SUBMIT</button>
 						</div>
 						<br>
 
@@ -66,14 +72,23 @@
 									<td>[[${r.replyContent}]]</td>
 									<td>[[${r.replyModifyDate}]]</td>
 									<td width="80px">
-										<th:block th:if="${session.loginUser != null && r.replyWriter eq session.loginUser.id}">
-											<input type="hidden"	th:value="${r.replyId}" name="replyId">
+										<th:block
+											th:if="${session.loginUser != null && r.replyWriter eq session.loginUser.id}">
+											<input type="hidden" th:value="${r.replyId}" name="replyId">
 											<span class="updel">
-												<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16"><path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/></svg>
+												<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+													fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+													<path
+														d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+												</svg>
 											</span>
 											&nbsp;
 											<span class="updel">
-												<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16"><path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/></svg>
+												<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+													fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+													<path
+														d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
+												</svg>
 											</span>
 											<input type="hidden" th:value="${r.replyContent}">
 										</th:block>
@@ -95,12 +110,11 @@
 					</div>
 					<div class="modal-footer flex-nowrap p-0">
 						<button type="button"
-							class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-end" id="delete"
-							onclick="location.href='/member/delete'">
+							class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-end"
+							id="delete" onclick="location.href='/member/delete'">
 							<strong>네</strong>
 						</button>
-						<button type="button"
-							class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0"
+						<button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0"
 							data-bs-dismiss="modal">아니오</button>
 					</div>
 				</div>
@@ -110,183 +124,184 @@
 		<footer class="my-5 pt-5 text-muted text-center text-small"></footer>
 
 		<script th:inline="javascript">
-			window.onload=()=>{
+			window.onload = () => {
 				const updBtn = document.getElementById("updateForm");
 				const form = document.getElementById("detailForm");
 				const deleteModal = document.getElementById("deleteModal");
 				const tbody = document.querySelector("tbody");
 				const content = document.getElementById("replyContent");
-				const pencilSVG='<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16"><path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/></svg>';
-				const trashSVG='<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16"><path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/></svg>';
-				const checkSVG='<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16"><path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022"/></svg>';
-				const xSVG='<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16"><path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/></svg>';
+				const pencilSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16"><path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/></svg>';
+				const trashSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16"><path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/></svg>';
+				const checkSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16"><path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022"/></svg>';
+				const xSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16"><path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/></svg>';
 
-				if (updBtn != null){
-					updBtn.addEventListener("click", ()=>{
-						if (upd != null){
+				if (updBtn != null) {
+					updBtn.addEventListener("click", () => {
+						if (upd != null) {
 							form.action = "/board/updForm";
 							form.submit();
-						}	
+						}
 					});
 				}
-				if(deleteModal != null){
-					document.getElementById("deleteModal").addEventListener("click", ()=>{
+				if (deleteModal != null) {
+					document.getElementById("deleteModal").addEventListener("click", () => {
 						$("#modalChoice").modal("show");
 					});
 				}
 
-				document.getElementById("delete").addEventListener("click", ()=>{
-					form.action="/board/delete";
+				document.getElementById("delete").addEventListener("click", () => {
+					form.action = "/board/delete";
 					form.submit();
 				});
 
-				document.getElementById("replySubmit").addEventListener("click", function(){	
-					if (content.value != ""){
+				document.getElementById("replySubmit").addEventListener("click", function () {
+					if (content.value != "") {
 						$.ajax({
-							url: "/board/rinsert",
-							dataType: "json",
-							data:{
-								replyContent : content.value,
-								refBoardId : /*[[${b.boardId}]]*/ 1,
-								replyWriter : /*[[${session.loginUser != null? session.loginUser.id:""}]]*/"user01"
+							url: "/board/reply",
+							type: 'post',
+							data: {
+								replyContent: content.value,
+								refBoardId: /*[[${b.boardId}]]*/ 1,
+								replyWriter: /*[[${session.loginUser != null? session.loginUser.id:""}]]*/"user01"
 							},
-							success : (data)=>{
+							success: (data) => {
 
-								tbody.innerHTML="";
-								for(const obj of data){
+								tbody.innerHTML = "";
+								for (const obj of data) {
 									const tr = document.createElement("tr");
 									const td1 = document.createElement("td");
-									td1.innerText=obj.nickName;
+									td1.innerText = obj.nickName;
 									const td2 = document.createElement("td");
-									td2.innerText=obj.replyContent;
+									td2.innerText = obj.replyContent;
 									const td3 = document.createElement("td");
-									td3.innerText=obj.replyModifyDate;
+									td3.innerText = obj.replyModifyDate;
 									const td4 = document.createElement("td");
 									td4.setAttribute("width", "80px");
-									if(obj.replyWriter == /*[[${session.loginUser != null? session.loginUser.id : ""}]]*/"user01"){
-										td4.innerHTML = "<input type='hidden' value='"+obj.replyId+"' name='replyId'>"+
-											"<span class='updel'>"+
-											pencilSVG+
-											"</span> &nbsp "+
-											"<span class='updel'>"+
-											trashSVG+
-											"</span><input type='hidden' value='"+obj.replyContent+"'>"
+									if (obj.replyWriter == /*[[${session.loginUser != null? session.loginUser.id : ""}]]*/"user01") {
+										td4.innerHTML = "<input type='hidden' value='" + obj.replyId + "' name='replyId'>" +
+											"<span class='updel'>" +
+											pencilSVG +
+											"</span> &nbsp " +
+											"<span class='updel'>" +
+											trashSVG +
+											"</span><input type='hidden' value='" + obj.replyContent + "'>"
 									}
 									tr.append(td1, td2, td3, td4);
 									tbody.append(tr);
 								}
 								content.value = "";
 							},
-							error : (data)=>{
+							error: (data) => {
 								console.log(data);
-							} 
+							}
 						});
 					}
 				});
 
-				tbody.addEventListener("mouseover",(e)=>{
-					const eventTarget =e.target;
-					const targetTagName = eventTarget.tagName.toLowerCase();
-					switch(targetTagName){
-					case "span": case"svg": case"path":
-						eventTarget.style.cursor = "pointer";
-						if (targetTagName == "path"){
-							eventTarget.setAttribute("fill", "rgb(109, 179, 63)");
-						}else{
-							eventTarget.querySelector("path").setAttribute("fill","rgb(109, 179, 63)");
-						}
-					}
-				});
-				tbody.addEventListener("mouseout", e=>{
+				tbody.addEventListener("mouseover", (e) => {
 					const eventTarget = e.target;
 					const targetTagName = eventTarget.tagName.toLowerCase();
-					switch(targetTagName){
-					case "span": case "svg": case "path":
-						if (targetTagName == "path"){
-							eventTarget.setAttribute("fill", "currentColor");
-						} else{
-							eventTarget.querySelector("path").setAttribute("fill", "currentColor");
-						}
+					switch (targetTagName) {
+						case "span": case "svg": case "path":
+							eventTarget.style.cursor = "pointer";
+							if (targetTagName == "path") {
+								eventTarget.setAttribute("fill", "rgb(109, 179, 63)");
+							} else {
+								eventTarget.querySelector("path").setAttribute("fill", "rgb(109, 179, 63)");
+							}
+					}
+				});
+				tbody.addEventListener("mouseout", e => {
+					const eventTarget = e.target;
+					const targetTagName = eventTarget.tagName.toLowerCase();
+					switch (targetTagName) {
+						case "span": case "svg": case "path":
+							if (targetTagName == "path") {
+								eventTarget.setAttribute("fill", "currentColor");
+							} else {
+								eventTarget.querySelector("path").setAttribute("fill", "currentColor");
+							}
 					}
 				});
 
-				tbody.addEventListener("click", e=>{
+				tbody.addEventListener("click", e => {
 					const target = e.target;
 					const targetTagName = target.tagName.toLowerCase();
-					
+
 					let targetSVG = null;
-					switch(targetTagName){
-					case "span": 
-						targetSVG = target.children[0]; 
-						break;
-					case "svg": 
-						targetSVG = target;
-						break;
-					case "path": 
-						targetSVG = target.parentElement;
+					switch (targetTagName) {
+						case "span":
+							targetSVG = target.children[0];
+							break;
+						case "svg":
+							targetSVG = target;
+							break;
+						case "path":
+							targetSVG = target.parentElement;
 					}
 
 					const myTd = targetSVG.parentElement.parentElement;
 					const contentTd = myTd.parentElement.children[1];
 					const replyId = myTd.children[0].value;
 
-					if(targetSVG != null){
-						if (targetSVG.className.baseVal.includes("trash")){
-							if(confirm("delete confirm")){
+					if (targetSVG != null) {
+						if (targetSVG.className.baseVal.includes("trash")) {
+							if (confirm("delete confirm")) {
 								$.ajax({
-									url:"/board/rdelete",
-									data :{
-										replyId : replyId
+									url: "/board/reply",
+									type: 'delete',
+									data: {
+										replyId: replyId
 									},
-									success : data=>{
-										if(data == 1){
+									success: data => {
+										if (data == 1) {
 											myTd.parentElement.remove();
 										}
 									}
 								});
 							}
-						}else if(targetSVG.className.baseVal.includes("pencil")){
+						} else if (targetSVG.className.baseVal.includes("pencil")) {
 							const beforeCheckArr = document.getElementsByClassName("bi-check-lg");
-							if(beforeCheckArr.length > 0){
+							if (beforeCheckArr.length > 0) {
 								console.log(beforeCheckArr[0]);
 								const beforeCheckTd = beforeCheckArr[0].parentElement.parentElement;
 								beforeCheckTd.parentElement.children[1].innerHTML = beforeCheckTd.children[3].value;
 								beforeCheckTd.children[1].innerHTML = pencilSVG;
-								beforeCheckTd.children[2].innerHTML=trashSVG;
+								beforeCheckTd.children[2].innerHTML = trashSVG;
 
 							}
 
-							contentTd.innerHTML="<textarea rows='2' cols='30' style='resize:none'>"+ contentTd.innerText+"</textarea>";
-							myTd.children[1].innerHTML=checkSVG;
-							myTd.children[2].innerHTML=xSVG;
+							contentTd.innerHTML = "<textarea rows='2' cols='30' style='resize:none'>" + contentTd.innerText + "</textarea>";
+							myTd.children[1].innerHTML = checkSVG;
+							myTd.children[2].innerHTML = xSVG;
 
-							
-						}else if(targetSVG.className.baseVal.includes("check")){
+
+						} else if (targetSVG.className.baseVal.includes("check")) {
 							const replyContent = contentTd.children[0].value;
 							$.ajax({
-								url: "/board/rupdate",
-								method: "POST",
+								url: "/board/reply",
+								method: "Put",
 								data: {
 									replyContent: replyContent,
 									replyId: replyId
 								},
-								success: data=>{
-									if (data==1){
-										contentTd.innerHTML=replyContent;
-										myTd.children[1].innerHTML=pencilSVG;
-										myTd.children[2].innerHTML=trashSVG;
-										myTd.children[3].value=replyContent;
+								success: data => {
+									if (data == 1) {
+										contentTd.innerHTML = replyContent;
+										myTd.children[1].innerHTML = pencilSVG;
+										myTd.children[2].innerHTML = trashSVG;
+										myTd.children[3].value = replyContent;
 									}
 								},
-								error: data =>{
+								error: data => {
 									console.log(data);
 								}
 							});
-						}else if(targetSVG.className.baseVal.includes("x")){
+						} else if (targetSVG.className.baseVal.includes("x")) {
 							const text = myTd.children[3].value;
-							contentTd.innerHTML=text;
-							myTd.children[1].innerHTML=pencilSVG;
-							myTd.children[2].innerHTML=trashSVG;
+							contentTd.innerHTML = text;
+							myTd.children[1].innerHTML = pencilSVG;
+							myTd.children[2].innerHTML = trashSVG;
 						}
 					}
 				});
@@ -294,4 +309,5 @@
 		</script>
 	</div>
 </body>
+
 </html>

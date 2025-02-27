@@ -1,14 +1,8 @@
 package kh.springboot.member.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,14 +11,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpSession;
 import kh.springboot.member.model.exception.MemberException;
 import kh.springboot.member.model.service.MemberService;
@@ -43,7 +33,6 @@ public class MemberController {
 	private final MemberService mService;
 	private final BCryptPasswordEncoder bcrypt;
 	//private Logger log = LoggerFactory.getLogger(MemberController.class);
-	private final JavaMailSender mailSender;
 	
 	
 	@GetMapping("/signIn")
@@ -218,96 +207,96 @@ public class MemberController {
 		}
 	}
 	
-	@GetMapping("/checkValue")
-	@ResponseBody
-	public int checkValue(@RequestParam("col") String col,
-			@RequestParam("value") String value) {
-		HashMap<String, String>map = new HashMap<>();
-		map.put("col", col);
-		map.put("value",value);
-		int count = mService.checkValue(map);
-		return count;
-	}
+//	@GetMapping("/checkValue")
+//	@ResponseBody
+//	public int checkValue(@RequestParam("col") String col,
+//			@RequestParam("value") String value) {
+//		HashMap<String, String>map = new HashMap<>();
+//		map.put("col", col);
+//		map.put("value",value);
+//		int count = mService.checkValue(map);
+//		return count;
+//	}
 	
-	@PostMapping("/profile")
-	@ResponseBody
-	public int updateProfile(@RequestParam(value="profile", required=false) MultipartFile profile,
-			Model model) {
-		//System.out.println(profile);
-		int result = 0;
-		String renameFileName = null;
-		Member m = (Member) model.getAttribute("loginUser");
-		
-		String savePath = "c:\\profiles";
-		File folder = new File(savePath);
-		if(!folder.exists()) folder.mkdir();
-		
-		if(m.getProfile()!=null) {
-			File f = new File(savePath+"\\"+m.getProfile());
-			f.delete();
-		}
-		
-		if(profile != null) {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-			int ranNum = (int)(Math.random()*100000);
-			String originalFileName = profile.getOriginalFilename();
-			renameFileName = sdf.format(
-								new Date())+ranNum+
-								originalFileName.substring(
-								originalFileName.lastIndexOf(".")); 
-			
-			try {
-				profile.transferTo(new File(folder+"\\"+renameFileName));
-			} catch (IllegalStateException | IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
-		HashMap<String, String> map = new HashMap<>();
-		map.put("id", m.getId());
-		map.put("profile", renameFileName);
-		
-		result = mService.updateProfile(map);
-		if(result == 1) {
-			m.setProfile(renameFileName);
-			model.addAttribute("loginUser", m);
-		}
-		
-		return result;
-	}
+//	@PostMapping("/profile")
+//	@ResponseBody
+//	public int updateProfile(@RequestParam(value="profile", required=false) MultipartFile profile,
+//			Model model) {
+//		//System.out.println(profile);
+//		int result = 0;
+//		String renameFileName = null;
+//		Member m = (Member) model.getAttribute("loginUser");
+//		
+//		String savePath = "c:\\profiles";
+//		File folder = new File(savePath);
+//		if(!folder.exists()) folder.mkdir();
+//		
+//		if(m.getProfile()!=null) {
+//			File f = new File(savePath+"\\"+m.getProfile());
+//			f.delete();
+//		}
+//		
+//		if(profile != null) {
+//			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+//			int ranNum = (int)(Math.random()*100000);
+//			String originalFileName = profile.getOriginalFilename();
+//			renameFileName = sdf.format(
+//								new Date())+ranNum+
+//								originalFileName.substring(
+//								originalFileName.lastIndexOf(".")); 
+//			
+//			try {
+//				profile.transferTo(new File(folder+"\\"+renameFileName));
+//			} catch (IllegalStateException | IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//		
+//		HashMap<String, String> map = new HashMap<>();
+//		map.put("id", m.getId());
+//		map.put("profile", renameFileName);
+//		
+//		result = mService.updateProfile(map);
+//		if(result == 1) {
+//			m.setProfile(renameFileName);
+//			model.addAttribute("loginUser", m);
+//		}
+//		
+//		return result;
+//	}
 	
-	@GetMapping("/echeck")
-	@ResponseBody
-	public String checkEmail(@RequestParam("email") String email) {
-		MimeMessage mimeMessage = mailSender.createMimeMessage();
-		
-		String subject = "[SpringBoot] 이메일 확인";
-		String body = "<h1 align = 'center'> SpringBoot 이메일 확인</h1><br>";
-		body += "<div style='border: 3px solid green; text-align: center;"
-				+ " font-size: 15px;'>본 메일은 이메일을 확인하기 위해 발송되었습니다.<br>";
-		body += "아래 숫자를 인증번호 확인란에 작성하여 확인해주시기 바랍니다.<br><br>";
-		
-		String random="";
-		for(int i =0; i<5; i++) {
-			random += (int)(Math.random()*10);
-		}
-		body += "<span style='font-size: 30px; text-decoration: underline;'><b>"
-				+random+"</b></span><br></div>";
-		
-		MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
-		try {
-			mimeMessageHelper.setTo(email);
-			mimeMessageHelper.setSubject(subject);
-			mimeMessageHelper.setText(body, true);
-		} catch (MessagingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		mailSender.send(mimeMessage);
-		
-		return random;
-	}
+//	@GetMapping("/echeck")
+//	@ResponseBody
+//	public String checkEmail(@RequestParam("email") String email) {
+//		MimeMessage mimeMessage = mailSender.createMimeMessage();
+//		
+//		String subject = "[SpringBoot] 이메일 확인";
+//		String body = "<h1 align = 'center'> SpringBoot 이메일 확인</h1><br>";
+//		body += "<div style='border: 3px solid green; text-align: center;"
+//				+ " font-size: 15px;'>본 메일은 이메일을 확인하기 위해 발송되었습니다.<br>";
+//		body += "아래 숫자를 인증번호 확인란에 작성하여 확인해주시기 바랍니다.<br><br>";
+//		
+//		String random="";
+//		for(int i =0; i<5; i++) {
+//			random += (int)(Math.random()*10);
+//		}
+//		body += "<span style='font-size: 30px; text-decoration: underline;'><b>"
+//				+random+"</b></span><br></div>";
+//		
+//		MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
+//		try {
+//			mimeMessageHelper.setTo(email);
+//			mimeMessageHelper.setSubject(subject);
+//			mimeMessageHelper.setText(body, true);
+//		} catch (MessagingException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		mailSender.send(mimeMessage);
+//		
+//		return random;
+//	}
 	
 	@GetMapping("/findIDPW")
 	public String findIDPW() {
@@ -342,21 +331,21 @@ public class MemberController {
 		}
 	}
 	
-	@GetMapping("/linsert")
-	@ResponseBody
-	public int insertTodo(@ModelAttribute TodoList todo) {
-		return mService.insertTodo(todo);
-	}
-	
-	@GetMapping("/lupdate")
-	@ResponseBody
-	public int updateTodo(@ModelAttribute TodoList todo) {
-		return mService.updateTodo(todo);
-	}
-	
-	@GetMapping("/ldelete")
-	@ResponseBody
-	public int deleteTodo(@RequestParam("todoNum") int todoNum) {
-		return mService.deleteTodo(todoNum);
-	}
+//	@GetMapping("/linsert")
+//	@ResponseBody
+//	public int insertTodo(@ModelAttribute TodoList todo) {
+//		return mService.insertTodo(todo);
+//	}
+//	
+//	@GetMapping("/lupdate")
+//	@ResponseBody
+//	public int updateTodo(@ModelAttribute TodoList todo) {
+//		return mService.updateTodo(todo);
+//	}
+//	
+//	@GetMapping("/ldelete")
+//	@ResponseBody
+//	public int deleteTodo(@RequestParam("todoNum") int todoNum) {
+//		return mService.deleteTodo(todoNum);
+//	}
 }

@@ -1,7 +1,5 @@
 package kh.springboot.board.controller;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import org.springframework.stereotype.Controller;
@@ -12,16 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonIOException;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import kh.springboot.board.model.exception.BoardException;
 import kh.springboot.board.model.service.BoardService;
@@ -154,20 +144,23 @@ public class BoardController {
 //		return array.toString();
 //	}
 	
-	@GetMapping("/top")
-	public void selectTop(HttpServletResponse response){
-		ArrayList<Board> list =bService.selectTop();
-		response.setContentType("application/json; charset=UTF-8");
-
-		GsonBuilder gb = new GsonBuilder();
-		GsonBuilder dfgb = gb.setDateFormat("yyyy-MM-dd");
-		Gson gson = dfgb.create();
-		try {
-			gson.toJson(list, response.getWriter());
-		} catch (JsonIOException | IOException e) {
-			e.printStackTrace();
-		}
-	}
+//	@GetMapping("/top")
+//	public void selectTop(HttpServletResponse response){
+//		//HttpMessageConverter
+//		//자동으로 jackson으로 변환.
+//		//그래서 
+//		ArrayList<Board> list =bService.selectTop();
+//		response.setContentType("application/json; charset=UTF-8");
+//
+//		GsonBuilder gb = new GsonBuilder();
+//		GsonBuilder dfgb = gb.setDateFormat("yyyy-MM-dd");
+//		Gson gson = dfgb.create();
+//		try {
+//			gson.toJson(list, response.getWriter());
+//		} catch (JsonIOException | IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
 //	@GetMapping("rinsert")
 //	@ResponseBody
@@ -206,33 +199,33 @@ public class BoardController {
 //		}
 //	}
 	
-	@GetMapping("/rinsert")
-	@ResponseBody
-	public String insertReply(@ModelAttribute Reply r) {
-		int result = bService.insertReply(r);
-		ArrayList<Reply> rlist = bService.selectReplyList(r.getRefBoardId());
-		
-		ObjectMapper om = new ObjectMapper();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		om.setDateFormat(sdf);
-		String str = null;
-		try {
-			str = om.writeValueAsString(rlist);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
-		return str;
-	}
-	
-	@GetMapping("/rdelete")
-	@ResponseBody
-	public int deleteReply(@RequestParam("replyId") int replyId) {
-		return bService.deleteReply(replyId);
-	}
-	
-	@PostMapping("/rupdate")
-	@ResponseBody
-	public int updateReply(Reply r) {
-		return bService.updateReply(r);
-	}
+//	@GetMapping("/rinsert")
+//	@ResponseBody
+//	public String insertReply(@ModelAttribute Reply r) {
+//		int result = bService.insertReply(r);
+//		ArrayList<Reply> rlist = bService.selectReplyList(r.getRefBoardId());
+//		
+//		ObjectMapper om = new ObjectMapper();
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//		om.setDateFormat(sdf);
+//		String str = null;
+//		try {
+//			str = om.writeValueAsString(rlist);
+//		} catch (JsonProcessingException e) {
+//			e.printStackTrace();
+//		}
+//		return str;
+//	}
+//	
+//	@GetMapping("/rdelete")
+//	@ResponseBody
+//	public int deleteReply(@RequestParam("replyId") int replyId) {
+//		return bService.deleteReply(replyId);
+//	}
+//	
+//	@PostMapping("/rupdate")
+//	@ResponseBody
+//	public int updateReply(Reply r) {
+//		return bService.updateReply(r);
+//	}
 }
