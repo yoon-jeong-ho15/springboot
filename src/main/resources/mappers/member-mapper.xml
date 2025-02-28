@@ -60,7 +60,7 @@
 	<select id="checkValue" resultType="_int">
 		select count(*)
 		from member
-		where ${col} = #{value}
+		where ${col} = #{val}
 	</select>
 	
 	<update id="updateProfile">

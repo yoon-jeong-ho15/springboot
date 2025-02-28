@@ -35,11 +35,11 @@ public class AdminController {
 		
 		try {
 			for(File file:files) {
-				System.out.println(file);
+				System.out.println("log file : "+file);
 				br = new BufferedReader(new FileReader(file));
 				String data;
 					while((data = br.readLine())!=null) {
-						System.out.println(br.readLine());
+						System.out.println("log lines : "+data);
 						String date = data.split(" ")[0];
 						//중복 검사 기능은 어떻게?
 						//String user = data.split(" ")[마지막];

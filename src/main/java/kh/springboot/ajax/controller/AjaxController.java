@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,10 +44,10 @@ public class AjaxController {
 	
 	@GetMapping("/checkValue")
 	public int checkValue(@RequestParam("col") String col,
-			@RequestParam("value") String value) {
+			@RequestParam("value") String val) {
 		HashMap<String, String>map = new HashMap<>();
 		map.put("col", col);
-		map.put("value",value);
+		map.put("val",val);
 		int count = mService.checkValue(map);
 		return count;
 	}
@@ -179,13 +180,19 @@ public class AjaxController {
 	}
 	
 	@PutMapping("/members")
-	public int updateMember(@RequestParam("val") String value,
-			@RequestParam("col") String column,
-			@RequestParam("id") String id) {
-		HashMap<String, String> map = new HashMap<>();
-		map.put("val", value);
-		map.put("col", column);
-		map.put("id", id);
+	public int updateMember(@RequestBody HashMap<String, String> map) {
+		System.out.println("requestbody : "+map);
+		
+		if(map.get("col").equals("NICKNAME")) {
+			int count = mService.checkValue(map);
+			System.out.println("checkValue : "+count);
+			if(count != 0) {
+				return -1;
+			}
+		} else if(map.get("col").equals("STATUS")||map.get("col").equals("ADMIN")) {
+			map.put("col", map.get("col").equals("STATUS")? "member_status": "is_admin");
+		}
 		return mService.updateMemberItem(map);
 	}
+
 }
