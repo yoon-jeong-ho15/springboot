@@ -12,9 +12,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import jakarta.servlet.http.HttpServletRequest;
 import kh.springboot.board.model.service.BoardService;
 import kh.springboot.board.model.vo.Board;
+import kh.springboot.board.model.vo.PageInfo;
+import kh.springboot.common.Pagination;
 import kh.springboot.member.model.service.MemberService;
 import kh.springboot.member.model.vo.Member;
 import lombok.RequiredArgsConstructor;
@@ -79,5 +83,28 @@ public class AdminController {
 	      ArrayList<Member> list = mService.selectMembers();
 	      model.addAttribute("list",list);
 	      return "/members";
+	   }
+	
+	@GetMapping("/boards")
+	   public String selectBoard(@RequestParam(value="page", defaultValue="1")
+	   	int currentPage, Model model, HttpServletRequest request) {
+	      /*
+	      // 쿼리 : 게시글 개수(getListCount)
+	         select count(*)
+	         from board
+	         where board_type = 1
+	      */
+	      int listCount = bService.getListCount(-1);
+	      PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10);
+	      ArrayList<Board> list = bService.selectBoardList(pi, -1);
+	      
+	      System.out.println("listCount : "+listCount);
+	      System.out.println("list.isEmptry : "+list.isEmpty());
+	      model.addAttribute("list", list);
+	      model.addAttribute("pi", pi);
+	      model.addAttribute("loc", request.getRequestURI());
+	      
+	      return "/boards";
+	    
 	   }
 }

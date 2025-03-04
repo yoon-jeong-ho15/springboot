@@ -194,5 +194,13 @@ public class AjaxController {
 		}
 		return mService.updateMemberItem(map);
 	}
+	
+	@PutMapping("/status")
+	public int updateBoardStatus(@RequestBody HashMap<String, Object> map) {
+		System.out.println("request body : "+map);
+		int result = bService.updateBoardStatus(map);
+		System.out.println("result : "+result);
+		return result;
+	}
 
 }
