@@ -151,6 +151,11 @@
 		set board_status = #{status}
 		where board_id = #{boardId}
 	</update>
+	
+	<select id="selectAllAttm" resultType="Attachment">
+         select * from attachment
+         order by ref_board_id, attm_level, attm_id
+      </select>
 	<resultMap id="boardResultSet" type="Board">
 		<result column="board_create_date" property="createDate"/>
 		<result column="board_modify_date" property="modifyDate"/>

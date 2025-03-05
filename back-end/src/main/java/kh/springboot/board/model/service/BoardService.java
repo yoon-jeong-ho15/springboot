@@ -95,6 +95,10 @@ public class BoardService {
 		return mapper.updateBoardStatus(map);
 	}
 
+	public ArrayList<Attachment> selectAllAttm() {
+		return mapper.selectAllAttm();
+	}
+
 //	public int statusNAttm(int bid) {
 //		return mapper.statusNAttm(bid);
 //	}

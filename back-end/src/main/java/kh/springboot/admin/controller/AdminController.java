@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpServletRequest;
 import kh.springboot.board.model.service.BoardService;
+import kh.springboot.board.model.vo.Attachment;
 import kh.springboot.board.model.vo.Board;
 import kh.springboot.board.model.vo.PageInfo;
 import kh.springboot.common.Pagination;
@@ -107,4 +108,18 @@ public class AdminController {
 	      return "/boards";
 	    
 	   }
+	
+	@GetMapping("/attms")
+	public String selectAttms(@RequestParam(value="page", defaultValue="1")int currentPage,
+			Model model, HttpServletRequest request) {
+		int listCount = bService.getListCount(-2);
+		PageInfo pi = Pagination.getPageInfo(currentPage,  listCount,  10);
+		ArrayList<Board> list = bService.selectBoardList(pi, -2);
+		ArrayList<Attachment> aList = bService.selectAllAttm();
+		
+		model.addAttribute("list", list);
+		model.addAttribute("aList", aList).addAttribute("pi",pi).addAttribute("loc", request.getRequestURI());
+		
+		return "/attms";
+	}
 }
