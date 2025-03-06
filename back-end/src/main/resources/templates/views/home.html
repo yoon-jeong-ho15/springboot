@@ -94,28 +94,24 @@
 				// dataType: "json",
 				success: data=>{
 					const tbody = document.getElementsByClassName("table")[0].querySelector("tbody");
-					console.log(data);
 					for (const obj of data){
-						console.log(obj);
 
 						const tr = document.createElement("tr");
-						console.log(tr);
 
 						const td1 = document.createElement("td");
 						td1.innerText = obj.boardId;
-						console.log(td1.innerText);
+
 						const td2 = document.createElement("td");
 						td2.innerText = obj.boardTitle;
-						console.log(td2.innerText);
+
 						const td3 = document.createElement("td");
 						td3.innerText = obj.nickName;
-						console.log(td3.innerText);
+
 						const td4 = document.createElement("td");
 						td4.innerText = obj.modifyDate;
-						console.log(td4.innerText);
+
 						const td5 = document.createElement("td");
 						td5.innerText = obj.boardCount;
-						console.log(td5.innerText);
 
 						tr.append(td1);
 						tr.append(td2);
@@ -125,7 +121,7 @@
 						tbody.append(tr);
 					}
 				},
-				error: data=> console.log(data)
+
 			});
 		}
 		window.onload=()=>{
